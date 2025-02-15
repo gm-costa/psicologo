@@ -33,3 +33,8 @@ def pacientes(request):
 
     else:
         return render(request, template_name, context)
+
+def paciente_view(request, id):
+    paciente = Paciente.objects.get(id=id)
+    if request.method == "GET":
+        return render(request, 'paciente.html', {'paciente': paciente})
