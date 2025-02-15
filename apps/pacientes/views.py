@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from pacientes.models import Paciente
 
@@ -26,15 +26,30 @@ def pacientes(request):
             queixa=queixa,
             foto=foto
         )
-        paciente.save()
+        try:
+            paciente.save()
+            messages.add_message(request, messages.SUCCESS, 'Paciente cadastrado com sucesso.')
+        except Exception as e:
+            messages.add_message(request, messages.ERROR, f'Erro: {e}.')
 
-        messages.add_message(request, messages.SUCCESS, 'Paciente cadastrado com sucesso.')
         return redirect('pacientes')
 
     else:
         return render(request, template_name, context)
 
 def paciente_view(request, id):
-    paciente = Paciente.objects.get(id=id)
+    paciente = get_object_or_404(Paciente, id=id)
     if request.method == "GET":
         return render(request, 'paciente.html', {'paciente': paciente})
+
+def atualizar_paciente(request, id):
+    paciente = get_object_or_404(Paciente, id=id)
+    pagamento_em_dia = request.POST.get('pagamento_em_dia')
+    status = True if pagamento_em_dia == 'ativo' else False
+    paciente.pagamento_em_dia = status
+    try:
+        paciente.save()
+        messages.add_message(request, messages.SUCCESS, 'Status atualizado com sucesso.')
+    except Exception as e:
+        messages.add_message(request, messages.ERROR, f'Erro: {e}.')
+    return redirect(f'/pacientes/{id}')
