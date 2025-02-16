@@ -44,7 +44,7 @@
             <div class="my-5">
                 {% include "partials/messages.html" %}
             </div>
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid xl:grid-cols-3 gap-4 md:grid-cols-2">
                 <div>
                     <h2 class="text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">Registrar consulta</h2>
 
@@ -80,6 +80,7 @@
                 </div>
 
                 <div class="mx-auto">
+                    <h2 class="text-pretty text-3xl font-semibold tracking-tight text-gray-900">Consultas realizadas</h2>
                     <ul role="list" class="divide-y divide-white/5">
                       
                         {% for consulta in consultas %}
@@ -101,10 +102,10 @@
                                     </div>
                                 </div>
                                 <a href="{% url 'excluir_consulta' consulta.id %}" class="flex gap-x-2">
-                                    <div class="flex-none rounded-full bg-red-400/10 px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400/30">excluir</div>
                                     <svg class="size-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                                        <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                                    </svg>
+                                        <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                                    </svg>                                      
+                                    <div class="flex-none rounded-full bg-red-400/10 px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400/30">excluir</div>
                                 </a>
                             </li>
                         {% endfor %}
@@ -112,11 +113,14 @@
                     </ul>
                       
                 </div>
+
+                <div>
+                    <h2 class="text-pretty text-3xl font-semibold tracking-tight text-gray-900">Gráfico</h2>
+                    <canvas id="myChart"></canvas>
+                </div>
+
             </div>
 
-            <div class="mt-4">
-                <canvas id="myChart"></canvas>
-            </div>
                
         </div>
     </div>
