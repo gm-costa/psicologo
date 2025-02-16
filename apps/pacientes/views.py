@@ -42,10 +42,13 @@ def paciente_view(request, id):
     paciente = get_object_or_404(Paciente, id=id)
     tarefas = Tarefa.objects.all()
     consultas = Consulta.objects.filter(paciente=paciente)
+    tuple_grafico = ([i.data.strftime('%d/%m/%Y') for i in consultas], [str(i.humor) for i in consultas])
+    print(tuple_grafico)
     context = {
         'paciente': paciente, 
         'tarefas': tarefas,
         'consultas': consultas,
+        'tuple_grafico': tuple_grafico,
     }
 
     if request.method == "POST":
