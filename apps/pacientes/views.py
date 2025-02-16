@@ -1,6 +1,7 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-from pacientes.models import Consulta, Paciente, Tarefa
+from pacientes.models import Consulta, Paciente, Tarefa, Visualizacoes
 
 def pacientes(request):
     template_name = 'pacientes.html'
@@ -93,3 +94,25 @@ def atualizar_paciente(request, id):
     except Exception as e:
         messages.add_message(request, messages.ERROR, f'Erro: {e}.')
     return redirect(f'/pacientes/{id}')
+
+def excluir_consulta(request, id):
+    consulta = get_object_or_404(Consulta, id=id)
+    try:
+        consulta.delete()
+    except Exception as e:
+        messages.add_message(request, messages.ERROR, f'{e}.')
+
+    return redirect(f'/pacientes/{consulta.paciente.id}')
+
+def consulta_publica(request, id):
+    consulta = get_object_or_404(Consulta, id=id)
+    if not consulta.paciente.pagamento_em_dia:
+        raise Http404()
+
+    view = Visualizacoes(
+        consulta=consulta,
+        ip=request.META['REMOTE_ADDR']
+    )
+    view.save()
+    
+    return render(request, 'consulta_publica.html', {'consulta': consulta})
