@@ -17,3 +17,29 @@ class Paciente(models.Model):
 
     def __str__(self):
         return self.nome
+
+class Tarefa(models.Model):
+    frequencia_choices = (
+        ('D', 'Diário'),
+        ('1xS', '1 vez por semana'),
+        ('2xS', '2 vezes por semana'),
+        ('3xS', '3 vezes por semana'),
+        ('N', 'Ao necessitar')
+    )
+    tarefa = models.CharField(max_length=255)
+    instrucoes = models.TextField()
+    frequencia = models.CharField(max_length=3, choices=frequencia_choices, default='D')
+
+    def __str__(self):
+        return self.tarefa
+    
+class Consulta(models.Model):
+    humor = models.PositiveIntegerField()
+    registro_geral = models.TextField()
+    video = models.FileField(upload_to="video")
+    tarefas = models.ManyToManyField(Tarefa)
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    data = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.paciente.nome
